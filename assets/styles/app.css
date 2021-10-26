@@ -1,0 +1,19 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+*{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Akzidenz-Grotesk BQ Extra Conde Gras condensé';
+    src: url("../../akzidenz-grotesk-bq-extra-bold-condensed.otf");
+}

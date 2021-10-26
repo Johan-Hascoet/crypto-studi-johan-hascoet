@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+ 
+{% block title %}Accueil{% endblock %}
+ 
+{% block body %}
+<div class="row justify-content-between align-items-center">
+    <div class="col-10 col-xl-3 p-4 p-xl-2">
+        <h1 style="font-weight:700;">Crypto Tracker</h1>
+    </div>
+    <div class="col-2 p-3 p-xl-2">
+        <a href="{{ path('ajout') }}" class="text-white me-0 me-xl-3 fs-4"><i class="fas fa-plus"></i></a>
+    </div>
+</div>
+
+<div class="row align-items-center">
+    <div class="col-12 text-center p-5">
+        <a href="{{ path('graph') }}" class="text-white text-decoration-none">
+            <h1 style="font-weight: 700;">
+                {% if valorisation > 0 %}
+                    + {{ valorisation }} €
+                {% elseif valorisation < 0 %}
+                    {{ valorisation }} €
+                {% endif %}
+            </h1>
+        </a>
+    </div>
+</div>
+
+<div class="row justify-content-around">
+    <div class="col-11 col-xl-7">
+
+        {% for crypto in listeCrypto %}
+            <div class="row text-white py-3">
+                <div class="col-3 col-xl-1 px-0">
+                    <img src="{{ asset('img/' ~ crypto.name ~ '.png') }}" class="w-10" alt="{{ asset('img/' ~ crypto.name ~ '.png') }}">
+                </div>
+                <div class="col-2 col-xl-1 px-0">
+                    <h3 style="font-weight: 700;">{{ crypto.name }}</h3>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-3 col-xl-2 px-0">
+                    {% for nomCrypto in resultAPI|keys %}
+                        {% if nomCrypto == crypto.name %} 
+                            ({{resultAPI[nomCrypto]['name']}})
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-1 col-xl-5"></div>
+                <div class="col-1 px-0">
+                    {% for nomCrypto in resultAPI|keys %}
+                        {% if nomCrypto == crypto.name %}
+                            {% if resultAPI[nomCrypto]['quote']['EUR']['price'] > crypto.price  %}
+                                <i class="fas fa-arrow-up text-success fs-2"></i>
+                            {% elseif resultAPI[nomCrypto]['quote']['EUR']['price'] < crypto.price %}
+                                <i class="fas fa-arrow-down text-danger fs-2"></i>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-1 px-0">
+                    <a href="{{ path('suppression-montant', {id: crypto.id}) }}"><button class="far fa-edit fs-4" style="color: #efefef;"></button></a>
+                </div>
+                <hr class="my-4">
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $(document).ready( function () {
+        $("td").each(function(item) {
+            $(".jshidden").hide();
+        });
+        $("#btn-suppression").click(function() {
+                    $(".jshidden").toggle('Drop');
+        });
+    } );
+</script>
+{% endblock %}
